@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_account'])) {
   </body>
   <footer>
     <div class="split-items">
-      <p>Last updated: <span>21 October 2025</span></p>
+      <p>Last updated: <span>23 October 2025</span></p>
       <p>Author: Josh Gillum</p>
     </div>
     <div class="split-items">

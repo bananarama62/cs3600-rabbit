@@ -51,8 +51,8 @@
       </div>
       <hr id="head-rule">
       <div class="content">
-        <h1>Task tracker</h1>
-        <p>This tool will serve as a reminder to complete certain tasks at set intervals. You will tell it which tasks you would like to complete and how often, and it will help you do it.</p>
+        <h1>RaBBiT</h1>
+        <p>This tool will serve as a wizard for making budgets using grant money.</p>
       </div>
     </div>
     <script src="" async defer></script>
@@ -60,7 +60,7 @@
   </body>
   <footer>
     <div class="split-items">
-      <p>Last updated: <span>20 October 2025</span></p>
+      <p>Last updated: <span>23 October 2025</span></p>
       <p>Author: Josh Gillum</p>
     </div>
     <div class="split-items">
