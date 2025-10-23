@@ -1,7 +1,7 @@
 <?php
 session_start();
 // Check if user is logged in, if not redirect to login page
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['user'])) {
   header("Location: ./login.php");
   exit();
 }
@@ -26,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_account'])) {
       $_SESSION = array();
       session_destroy();
       header("refresh:5;url=../index.php");
+  }
 }
 ?>
 
@@ -38,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_account'])) {
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Cookies</title>
+    <title>Delete Account</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../CSS/style.css">
@@ -53,14 +54,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_account'])) {
       <div class="navigation-head">
         <div class="site-logo">
           <a href="../index.php">
-            <h1>Tasks</h1>
+            <h1>RaBBiT</h1>
           </a>
         </div>
         <ul class="navigation-menu">
           <?php
           session_start();
           // Check if user is logged in, if not redirect to login page
-          if (!isset($_SESSION['username'])) {
+          if (!isset($_SESSION['user'])) {
             echo '<a href="./login.php" class="menu-item active">';
               echo '<li class="underline-hover-effect">Login</li>';
             echo '</a>';
@@ -68,8 +69,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_account'])) {
               echo '<li class="underline-hover-effect">Register</li>';
             echo '</a>';
           } else {
-            echo '<a href="../todo.php" class="menu-item">';
-              echo '<li class="underline-hover-effect">Tasks</li>';
+            echo '<a href="../dashboard.php" class="menu-item">';
+              echo '<li class="underline-hover-effect">Budgets</li>';
             echo '</a>';
             echo '<a href="./logout.php" class="menu-item">';
               echo '<li class="underline-hover-effect">Logout</li>';
@@ -90,12 +91,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_account'])) {
       session_start();
       echo '<h1>Delete Account</h1>';
       echo '<div id="submission-message-holder"><p></p></div>';
-      echo '<h2>You are currently logged in as '.$_SESSION["username"];
-      echo '<form method="post" class="form-control">';
-        echo '<div>';
-          echo '<button type="submit" name="delete_account" class="submit-button">Delete Account</button>';
-        echo '</div>';
-      echo '</form>';
+      if(isset($_SESSION['user'])){
+        echo '<h2>You are currently logged in as '.$_SESSION["username"];
+        echo '<form method="post" class="form-control">';
+          echo '<div>';
+            echo '<button type="submit" name="delete_account" class="submit-button">Delete Account</button>';
+          echo '</div>';
+        echo '</form>';
+      }
       if(isset($message) && !empty($message)){
         echo '<script>submissionMessage("'.$message.'");</script>';
       }

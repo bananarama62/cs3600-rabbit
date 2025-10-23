@@ -1,3 +1,21 @@
+<?php
+
+function write_to_console($data) {
+ $console = $data;
+ if (is_array($console))
+ $console = implode(',', $console);
+
+ echo "<script>console.log('Console: " . $console . "' );</script>";
+}
+session_start();
+// Check if user is logged in, if not redirect to login page
+if (!isset($_SESSION['user'])) {
+  header("Location: ./database/login.php");
+  exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -7,7 +25,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Task Tracker</title>
+    <title>Budgets Overview</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./CSS/style.css">
@@ -25,42 +43,33 @@
           </a>
         </div>
         <ul class="navigation-menu">
-          <?php
-          session_start();
-          // Check if user is logged in, if not redirect to login page
-          if (!isset($_SESSION['user'])) {
-            echo '<a href="./database/login.php" class="menu-item">';
-              echo '<li class="underline-hover-effect">Login</li>';
-            echo '</a>';
-            echo '<a href="./database/register.php" class="menu-item">';
-              echo '<li class="underline-hover-effect">Register</li>';
-            echo '</a>';
-          } else {
-            echo '<a href="./dashboard.php" class="menu-item">';
-              echo '<li class="underline-hover-effect">Budgets</li>';
-            echo '</a>';
-            echo '<a href="./database/logout.php" class="menu-item">';
-              echo '<li class="underline-hover-effect">Logout</li>';
-            echo '</a>';
-            echo '<a href="./database/delete_account.php" class="menu-item">';
-              echo '<li class="underline-hover-effect error">Delete Account</li>';
-            echo '</a>';
-          }
-          ?>
+          <a href="./budgets.php" class="menu-item active">
+            <li class="underline-hover-effect">Budgets</li>
+          </a>
+          <a href="./database/logout.php" class="menu-item">
+            <li class="underline-hover-effect">Logout</li>
+          </a>
+          <a href="./database/delete_account.php" class="menu-item">
+            <li class="underline-hover-effect error">Delete Account</li>
+          </a>
         </ul>
       </div>
       <hr id="head-rule">
-      <div class="content">
-        <h1>Task tracker</h1>
-        <p>This tool will serve as a reminder to complete certain tasks at set intervals. You will tell it which tasks you would like to complete and how often, and it will help you do it.</p>
-      </div>
+    </div>
+    <div class="breadcrumbs">
+      <a href="./index.php">home</a>
+      <p>></p>
+      <p>budgets-overview</p>
+    </div>
+    <div class="content">
+      <h1>Budgets</h1>
     </div>
     <script src="" async defer></script>
     <hr id="foot-rule">
   </body>
   <footer>
     <div class="split-items">
-      <p>Last updated: <span>20 October 2025</span></p>
+      <p>Last updated: <span>23 October 2025</span></p>
       <p>Author: Josh Gillum</p>
     </div>
     <div class="split-items">

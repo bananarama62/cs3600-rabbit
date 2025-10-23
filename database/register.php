@@ -22,12 +22,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("ss",$username,$password);
 
     if($stmt->execute()){
-      $message = "Account created successfully. You will be redirected soon.";
-      $error = 0;
-      header("refresh:5;url=../todo.php");
-      session_start();
-      $_SESSION['user'] = $id;
-      $_SESSION['username'] = $user;
+      $stmt->close();
+      $stmt = $conn->prepare("SELECT id FROM login where username = ?");
+      $stmt->bind_param("s",$username);
+      if($stmt->execute()){
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+          $stmt->bind_result($id);
+          $stmt->fetch();
+          $message = "Account created successfully. You will be redirected soon.";
+          $error = 0;
+          header("refresh:5;url=../dashboard.php");
+          session_start();
+          $_SESSION['user'] = $id;
+          $_SESSION['username'] = $username;
+        } else {
+          $message = "Error: ".$stmt->error;
+        }
+      } else {
+        $message = "Error: ".$stmt->error;
+      }
     } else {
       $message = "Error: ".$stmt->error;
     }
@@ -62,14 +76,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="navigation-head">
         <div class="site-logo">
           <a href="../index.php">
-            <h1>Tasks</h1>
+            <h1>RaBBiT</h1>
           </a>
         </div>
         <ul class="navigation-menu">
           <?php
           session_start();
           // Check if user is logged in, if not redirect to login page
-          if (!isset($_SESSION['username'])) {
+          if (!isset($_SESSION['user'])) {
             echo '<a href="./login.php" class="menu-item">';
               echo '<li class="underline-hover-effect">Login</li>';
             echo '</a>';
@@ -77,8 +91,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
               echo '<li class="underline-hover-effect">Register</li>';
             echo '</a>';
           } else {
-            echo '<a href="../todo.php" class="menu-item">';
-              echo '<li class="underline-hover-effect">Tasks</li>';
+            echo '<a href="../dashboard.php" class="menu-item">';
+              echo '<li class="underline-hover-effect">Budgets</li>';
             echo '</a>';
             echo '<a href="./logout.php" class="menu-item">';
               echo '<li class="underline-hover-effect">Logout</li>';
@@ -104,7 +118,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       session_start();
       // Lets user know they are already logged in
 
-      if (!isset($_SESSION['username'])) {
+      if (!isset($_SESSION['user'])) {
         echo '<form method="post" class="form-control">';
           echo '<div>';
             echo '<label for="username">User Name: </label>';
