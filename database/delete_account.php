@@ -10,37 +10,22 @@ $message = "";
 $error = 1;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_account'])) {
-  include 'login_connection.php';
+  include 'db_connection.php';
 
   // Prepare and execute
-  $stmt = $conn->prepare("DELETE from userdata WHERE username = ?");
-  $stmt->bind_param("s", $_SESSION['username']);
+  $stmt = $conn->prepare("DELETE from login WHERE id = ?");
+  $stmt->bind_param("s", $_SESSION['user']);
   // Deletes user data from login database
   if ($stmt->execute()){
     $stmt->close();
     $conn->close();
 
 
-    include 'data_connection.php';
-    $stmt = $conn->prepare("DELETE from userdata WHERE username = ?");
-    $stmt->bind_param("s", $_SESSION['username']);
-    // Deletes user data from task database
-    if ($stmt->execute()){
       $message = "Account deletion successful.";
       $error = 0;
       $_SESSION = array();
       session_destroy();
       header("refresh:5;url=../index.php");
-    } else {
-      $message = "Failed to delete account.";
-    }
-    $stmt->close();
-    $conn->close();
-  } else {
-    $message = "Failed to delete account.";
-    $stmt->close();
-    $conn->close();
-  }
 }
 ?>
 

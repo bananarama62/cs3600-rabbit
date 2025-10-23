@@ -1,5 +1,5 @@
 <?php
-include 'login_connection.php';
+include 'db_connection.php';
 
 $message = "";
 
@@ -9,19 +9,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //$password = password_hash($password, PASSWORD_DEFAULT);
 
     // Prepare and execute
-    $stmt = $conn->prepare("SELECT password FROM userdata WHERE username = ?");
+    $stmt = $conn->prepare("SELECT id,password FROM login WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($db_password);
+        $stmt->bind_result($id,$db_password);
         $stmt->fetch();
 
         if (password_verify($password,$db_password)) {
             $message = "Login successful";
             // Start the session and redirect to the dashboard or home page
             session_start();
+            $_SESSION['user'] = $id;
             $_SESSION['username'] = $username;
             header("Location: ../todo.php");
             exit();

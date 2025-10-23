@@ -1,5 +1,5 @@
 <?php
-include 'login_connection.php';
+include 'db_connection.php';
 
 $message = "";
 $error = 1;
@@ -10,7 +10,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   $password = password_hash($password, PASSWORD_DEFAULT);
 
   // Check if username already exists
-  $checkEmailStmt = $conn->prepare("SELECT username FROM userdata where username = ?");
+  $checkEmailStmt = $conn->prepare("SELECT username FROM login where username = ?");
   $checkEmailStmt->bind_param("s",$username);
   $checkEmailStmt->execute();
   $checkEmailStmt->store_result();
@@ -18,7 +18,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   if ($checkEmailStmt->num_rows > 0){
     $message = "Username is not available";
   } else {
-    $stmt = $conn->prepare("INSERT INTO userdata (username, password) VALUES (?, ?)");
+    $stmt = $conn->prepare("INSERT INTO login (username, password) VALUES (?, ?)");
     $stmt->bind_param("ss",$username,$password);
 
     if($stmt->execute()){
@@ -26,7 +26,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       $error = 0;
       header("refresh:5;url=../todo.php");
       session_start();
-      $_SESSION['username'] = $username;
+      $_SESSION['user'] = $id;
+      $_SESSION['username'] = $user;
     } else {
       $message = "Error: ".$stmt->error;
     }
