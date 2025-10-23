@@ -9,9 +9,21 @@ function write_to_console($data) {
 }
 session_start();
 // Check if user is logged in, if not redirect to login page
+$budgets = [];
 if (!isset($_SESSION['user'])) {
   header("Location: ./database/login.php");
   exit();
+} else {
+  include './database/db_connection.php';
+  $stmt = $conn->prepare("SELECT budget.id, budget.name FROM budget_access JOIN budget ON budget_access.budget_id = budget.id WHERE budget_access.user_id = ?");
+  $stmt->bind_param("s", $_SESSION['user']);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $data = $result->fetch_all(MYSQLI_ASSOC);
+  foreach($data as $row){
+    write_to_console($row);
+    $budgets[] = $row;
+  }
 }
 
 ?>
@@ -63,6 +75,14 @@ if (!isset($_SESSION['user'])) {
     </div>
     <div class="content">
       <h1>Budgets</h1>
+      <?php
+        if(isset($budgets) && !empty($budgets)){
+          echo '<p>Budgets</p>';
+          foreach($budgets as $item){
+            echo '<p>Budget '.$item['id'].': '.$item['name'].'</p>';
+          }
+        }
+      ?>
     </div>
     <script src="" async defer></script>
     <hr id="foot-rule">
