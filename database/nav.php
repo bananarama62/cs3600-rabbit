@@ -27,7 +27,6 @@ function navigation($logged_in=True,$to_root="./"){
           echo '<li class="underline-hover-effect">Account</li>';
           echo '<div class="dropdown-content">';
             echo '<ul>';
-              echo '<li><a href="'.$to_root.'database/manage_account.php" class="menu-item">Manage</a></li>';
               echo '<li><a href="'.$to_root.'database/logout.php" class="menu-item">Logout</a></li>';
               echo '<hr>';
               echo '<li><a href="'.$to_root.'database/delete_account.php" class="menu-item error">Delete&nbspAccount</a></li>';
