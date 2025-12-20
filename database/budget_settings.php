@@ -144,7 +144,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete_budget"]) && !$i
       include './nav.php';
       navigation(isset($_SESSION['user']),$to_root="../");
       include './breadcrumb.php';
-      breadcrumbs(array(array("home","./index.php"),array("budgets","./dashboard.php"),array("edit-budget","./edit_budget.php?budget_id=".$budget_id.'&year='.$year),array("other-costs","javascript:location.reload();")));
+      breadcrumbs(array(array("home","../index.php"),array("budgets","../dashboard.php"),array("budget-settings","javascript:location.reload();")));
     ?>
     <div class="content">
     <h1>Budget Settings</h1>
